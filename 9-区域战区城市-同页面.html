@@ -9,7 +9,9 @@
             float:left;    width:33%;
         }
 </style>
+       <div id="container" style="height: 100%" ></div>
        <div id="container1" style="height: 100%"></div>
+       <div id="container2" style="height: 100%"></div>
        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
@@ -21,13 +23,106 @@
        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
        <script type="text/javascript">
+var dom = document.getElementById("container");
 var dom1 = document.getElementById("container1");
+var dom2 = document.getElementById("container2");
+var myChart = echarts.init(dom);
 var myChart1 = echarts.init(dom1);
+var myChart2 = echarts.init(dom2);
 var app = {};
 option = null;
 
 
-$.get('https://cwiki.guazi.com/download/attachments/11217074/%E5%85%A8%E5%9B%BD%E5%9F%8E%E5%B8%82%E5%9C%B0%E5%9B%BE-%E5%9F%8E%E5%B8%82%E7%AE%80%E7%A7%B0.json', function (chengshi) {
+$.get('金融-战区.json', function (guazifina) {
+
+    echarts.registerMap('guazi-fina', guazifina, {
+    });
+    option = {
+        title: {
+            text: '金融17战区测试',
+            subtext: 'Data from guazi',
+            sublink: 'http://www.guazi.com',
+            left: 'middle'
+        },
+        tooltip: {
+            trigger: 'item',
+            showDelay: 0,
+            transitionDuration: 0.2,
+            formatter: function (params) {
+                var value = params.value;
+                return params.seriesName + '<br/>' + params.name + ': ' + value;
+            }
+        },
+        visualMap: {
+            left: 'right',
+            min: 0.43,
+            max: 0.79,
+            inRange: {
+                color: ['yellow','red']
+            },
+            text:['High','Low'],           // 文本，默认为数值文本
+            calculable: true,
+            precision: 3
+        },
+        toolbox: {
+            show: true,
+            //orient: 'vertical',
+            left: 'left',
+            top: 'top',
+            feature: {
+                dataView: {readOnly: false},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        series: [
+            {
+                name: '各大区实际完成情况',
+                type: 'map',
+                roam: true,
+                map: 'guazi-fina',
+            label: {
+                normal: {
+                    show: false
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+                itemStyle:{
+                    emphasis:{label:{show:true}}
+                },
+                // 文本位置修正
+                textFixed: {
+                    Alaska: [20, -20]
+                },
+                data:[
+    {name: '京蒙', value: 0.533},
+    {name: '西北', value: 0.536},
+    {name: '津晋冀', value: 0.435},
+    {name: '鄂豫', value: 0.538},
+    {name: '闽湘赣', value: 0.551},
+    {name: '四川', value: 0.788},
+    {name: '云贵', value: 0.604},
+    {name: '重庆', value: 0.751},
+    {name: '安徽', value: 0.494},
+    {name: '江浙', value: 0.5},
+    {name: '上海', value: 0.571},
+    {name: '辽宁', value: 0.656},
+    {name: '黑吉', value: 0.593},
+    {name: '山东', value: 0.642},
+    {name: '粤东', value: 0.585},
+    {name: '粤西', value: 0.596}
+]
+            }
+        ]
+    };
+    myChart.setOption(option);
+
+})
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$.get('全国城市地图-城市简称.json', function (chengshi) {
 
     echarts.registerMap('chengshi', chengshi, {
     });
@@ -98,8 +193,91 @@ $.get('https://cwiki.guazi.com/download/attachments/11217074/%E5%85%A8%E5%9B%BD%
     };
     myChart1.setOption(option1);
 })
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$.get('金融-区域.json', function (quyu) {
+
+    echarts.registerMap('quyu', quyu, {
+    });
+    option2 = {
+        title: {
+            text: '7大区测试',
+            subtext: 'Data from guazi',
+            sublink: 'http://www.guazi.com',
+            left: 'middle'
+        },
+        tooltip: {
+            trigger: 'item',
+            showDelay: 0,
+            transitionDuration: 0.2,
+            formatter: function (params) {
+                var value = params.value;
+                return params.seriesName + '<br/>' + params.name + ': ' + value;
+            }
+        },
+        visualMap: {
+            left: 'right',
+            min: 2400,
+            max: 4010,
+            inRange: {
+                color: ['yellow','red']
+            },
+            text:['High','Low'],           // 文本，默认为数值文本
+            calculable: true,
+            precision: 0,
+            dimension: 0,
+        },
+        toolbox: {
+            show: true,
+            //orient: 'vertical',
+            left: 'left',
+            top: 'top',
+            feature: {
+                dataView: {readOnly: false},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        series: [
+            {
+                name: '金融区域目标',
+                type: 'map',
+                roam: true,
+                map: 'quyu',
+            label: {
+                normal: {
+                    show: false
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+                itemStyle:{
+                    emphasis:{label:{show:true}}
+                },
+                // 文本位置修正
+                textFixed: {
+                    Alaska: [20, -20]
+                },
+                data:
+                    [
+    {name: '华北', value: 2862},
+    {name: '中南', value: 2538},
+    {name: '西南', value: 3838},
+    {name: '华东', value: 4010},
+    {name: '奉鲁', value: 3783},
+    {name: '华南', value: 2472}
+]
+            }
+        ]
+    };
 
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+    myChart2.setOption(option2);
+})
 if (option && typeof option === "object") {
     myChart.setOption(option, true);
 }
