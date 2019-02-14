@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=LZtUEpGAdj6Dva3oz0Dv7osPcBGQWKs6"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+myChart.showLoading();
+
+$.get('中国&北京.json', function (guazifina) {
+    myChart.hideLoading();
+
+    echarts.registerMap('guazi-fina', guazifina, {
+    });
+    option = {
+        title: {
+            text: '金融7大区测试',
+            subtext: 'Data from guazi',
+            sublink: 'http://www.guazi.com',
+            left: 'middle'
+        },
+        tooltip: {
+            trigger: 'item',
+            showDelay: 0,
+            transitionDuration: 0.2,
+            formatter: function (params) {
+                var value = (params.value + '').split('.');
+                value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,');
+                return params.seriesName + '<br/>' + params.name + ': ' + value;
+            }
+        },
+        visualMap: {
+            left: 'right',
+            min: 1,
+            max: 10000,
+            inRange: {
+                color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+            },
+            text:['High','Low'],           // 文本，默认为数值文本
+            calculable: true
+        },
+        toolbox: {
+            show: true,
+            //orient: 'vertical',
+            left: 'left',
+            top: 'top',
+            feature: {
+                dataView: {readOnly: false},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        series: [
+            {
+                name: '各大区实际完成情况',
+                type: 'map',
+                roam: true,
+                map: 'guazi-fina',
+            label: {
+                normal: {
+                    show: false
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+                itemStyle:{
+                    emphasis:{label:{show:true}}
+                },
+                // 文本位置修正
+                textFixed: {
+                    Alaska: [20, -20]
+                },
+                data:[{"name":"黑龙江省","value":7379},{"name":"中南","value":5460},{"name":"吉林省","value":6272},{"name":"华东","value":9957},{"name":"奉鲁","value":6133},{"name":"华南","value":5154},{"name":"无","value":null}]
+            },
+            {
+                name: '各大区实际完成',
+                type: 'map',
+                roam: true,
+                map: 'guazi-fina',
+            label: {
+                normal: {
+                    show: false
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+                itemStyle:{
+                    emphasis:{label:{show:true}}
+                },
+                // 文本位置修正
+                textFixed: {
+                    Alaska: [20, -20]
+                },
+                data:[{"name":"宣武区","value":7379},{"name":"朝阳区","value":5460},{"name":"西南","value":6272},{"name":"华东","value":9957},{"name":"奉鲁","value":6133},{"name":"华南","value":5154},{"name":"无","value":null}]
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+});;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>

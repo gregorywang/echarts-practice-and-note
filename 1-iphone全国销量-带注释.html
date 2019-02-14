@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html style="height: 100%">   <!--设置窗口占比，一般默认为100%。同时style属性用于为 HTML 文档定义样式信息-->
+   <head>
+       <!--标题部分-->
+       <meta charset="utf-8">     <!--规定 HTML 文档的字符编码，必须放在head中。-->
+   </head>
+   <body style="height: 100%; margin: 0">  <!--margin是指的页边距，先不理-->
+       <div id="container" style="height: 100%"></div>  //div是单独分区，同进引入名为container的内容，
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=LZtUEpGAdj6Dva3oz0Dv7osPcBGQWKs6"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+//以上部分是引用js模块。type="text/javascript"是明确的告诉浏览器，后面的模板是以js来解释的。以上的js库，都是采用直接引用网络源现使用的，但随着部分js网上源头失效，就会有问题
+
+var dom = document.getElementById("container");    //定义变量dom，同时把上面已经定义好的container赋值给dom，后面通过dom对container进行添加和操作
+var myChart = echarts.init(dom);   //echarts的初始化操作，默认语句，创建一个echarts的实例。其中的dom就是上一句定义的实例容器。还有些其它参数可以调协，后面再学习
+var app = {};   //创建一个对象，由“{}”_也就是花括号包围起来的，就是对象。
+option = null;  //创建一个空变量，名为option
+function randomData() {
+    return Math.round(Math.random()*1000);
+}
+//上面定义一个函数，反馈一个随机数，并且四舍五入，使用了math的相关函数
+//下面的，同是接option的定义，将数量充实到这个对象中。
+//其中的定义，主要是使用echart的接口，对相关属性进行定义，并输入相关的数据
+option = {
+    title: {
+        text: 'iphone销量',
+        subtext: '纯属虚构',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        data:['iphone3','iphone4','iphone5']
+    },
+    visualMap: {
+        min: 0,
+        max: 2500,
+        left: 'left',
+        top: 'bottom',
+        text: ['高','低'],           // 文本，默认为数值文本
+        calculable: true
+    },
+    toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'center',
+        feature: {
+            dataView: {readOnly: false},
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+    series: [
+        {
+            name: 'iphone3',
+            type: 'map',
+            mapType: 'china',
+            roam: true,
+            label: {
+                normal: {
+                    show: true
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+//注意下面的name，可以使用name而不加引号，也可以使用双引号，即："name"
+            data:[
+                {name: '北京',value: randomData() },
+                {name: '天津',value: randomData() },
+                {name: '上海',value: randomData() },
+                {name: '重庆',value: randomData() },
+                {name: '河北',value: randomData() },
+                {name: '河南',value: randomData() },
+                {name: '云南',value: randomData() },
+                {name: '辽宁',value: randomData() },
+                {name: '黑龙江',value: randomData() },
+                {name: '湖南',value: randomData() },
+                {name: '安徽',value: randomData() },
+                {name: '山东',value: randomData() },
+                {name: '新疆',value: randomData() },
+                {name: '江苏',value: randomData() },
+                {name: '浙江',value: randomData() },
+                {name: '江西',value: randomData() },
+                {name: '湖北',value: randomData() },
+                {name: '广西',value: randomData() },
+                {name: '甘肃',value: randomData() },
+                {name: '山西',value: randomData() },
+                {name: '内蒙古',value: randomData() },
+                {name: '陕西',value: randomData() },
+                {name: '吉林',value: randomData() },
+                {name: '福建',value: randomData() },
+                {name: '贵州',value: randomData() },
+                {name: '广东',value: randomData() },
+                {name: '青海',value: randomData() },
+                {name: '西藏',value: randomData() },
+                {name: '四川',value: randomData() },
+                {name: '宁夏',value: randomData() },
+                {name: '海南',value: randomData() },
+                {name: '台湾',value: randomData() },
+                {name: '香港',value: randomData() },
+                {name: '澳门',value: randomData() }
+            ]
+        },
+        {
+            name: 'iphone4',
+            type: 'map',
+            mapType: 'china',
+            label: {
+                normal: {
+                    show: true
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            data:[
+                {name: '北京',value: randomData() },
+                {name: '天津',value: randomData() },
+                {name: '上海',value: randomData() },
+                {name: '重庆',value: randomData() },
+                {name: '河北',value: randomData() },
+                {name: '安徽',value: randomData() },
+                {name: '新疆',value: randomData() },
+                {name: '浙江',value: randomData() },
+                {name: '江西',value: randomData() },
+                {name: '山西',value: randomData() },
+                {name: '内蒙古',value: randomData() },
+                {name: '吉林',value: randomData() },
+                {name: '福建',value: randomData() },
+                {name: '广东',value: randomData() },
+                {name: '西藏',value: randomData() },
+                {name: '四川',value: randomData() },
+                {name: '宁夏',value: randomData() },
+                {name: '香港',value: randomData() },
+                {name: '澳门',value: randomData() }
+            ]
+        },
+        {
+            name: 'iphone5',
+            type: 'map',
+            mapType: 'china',
+            label: {
+                normal: {
+                    show: true
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            data:[
+                {name: '北京',value: randomData() },
+                {name: '天津',value: randomData() },
+                {name: '上海',value: randomData() },
+                {name: '广东',value: randomData() },
+                {name: '台湾',value: randomData() },
+                {name: '香港',value: randomData() },
+                {name: '澳门',value: randomData() }
+            ]
+        }
+    ]
+};;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+//上一句的判断条件，是option和option的类型，反馈结果都为object的话，就执行 myChart.setOption
+//setOption是个动作，执行后，ECharts 会合并新的参数和数据，然后刷新图表。option这个对象是必填项，后面还有三个默认参数，均为false。可修改
+//myChart是之前定义的图表的名字，而opTion是上面花大段代码定义的图片的属性和相关数据。
+       </script>
+   </body>
+</html>

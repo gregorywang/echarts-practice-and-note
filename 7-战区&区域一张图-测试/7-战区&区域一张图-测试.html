@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=LZtUEpGAdj6Dva3oz0Dv7osPcBGQWKs6"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+myChart.showLoading();
+
+$.get('金融-战区.json', function (guazifina) {
+    myChart.hideLoading();
+
+    echarts.registerMap('guazi-fina', guazifina, {
+    });
+    option = {
+        title: {
+            text: '金融17战区测试',
+            subtext: 'Data from guazi',
+            sublink: 'http://www.guazi.com',
+            left: 'middle'
+        },
+        tooltip: {
+            trigger: 'item',
+            showDelay: 0,
+            transitionDuration: 0.2,
+            formatter: function (params) {
+                var value = params.value;
+                return params.seriesName + '<br/>' + params.name + ': ' + value;
+            }
+        },
+        visualMap: {
+            left: 'right',
+            min: 0.43,
+            max: 0.79,
+            inRange: {
+                color: ['yellow','red']
+            },
+            text:['High','Low'],           // 文本，默认为数值文本
+            calculable: true,
+            precision: 3
+        },
+        toolbox: {
+            show: true,
+            //orient: 'vertical',
+            left: 'left',
+            top: 'top',
+            feature: {
+                dataView: {readOnly: false},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        series: [
+            {
+                name: '各大区实际完成情况',
+                type: 'map',
+                roam: true,
+                map: 'guazi-fina',
+            label: {
+                normal: {
+                    show: false
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+                itemStyle:{
+                    emphasis:{label:{show:true}}
+                },
+                // 文本位置修正
+                textFixed: {
+                    Alaska: [20, -20]
+                },
+                data:[
+    {name: '京蒙', value: 0.533},
+    {name: '西北', value: 0.536},
+    {name: '津晋冀', value: 0.435},
+    {name: '鄂豫', value: 0.538},
+    {name: '闽湘赣', value: 0.551},
+    {name: '四川', value: 0.788},
+    {name: '云贵', value: 0.604},
+    {name: '重庆', value: 0.751},
+    {name: '安徽', value: 0.494},
+    {name: '江浙', value: 0.5},
+    {name: '上海', value: 0.571},
+    {name: '辽宁', value: 0.656},
+    {name: '黑吉', value: 0.593},
+    {name: '山东', value: 0.642},
+    {name: '粤东', value: 0.585},
+    {name: '粤西', value: 0.596}
+]
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+});;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>
